@@ -1,4 +1,3 @@
-from ctypes import *
 from pytcc import TCC, FILE
 comp = TCC()
 comp.output_type = FILE
