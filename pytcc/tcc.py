@@ -1,4 +1,4 @@
-from ._libtcc import lib, TCC_OUTPUT_MEMORY as MEMORY, TCC_OUTPUT_FILE as FILE, TCC_OUTPUT_OBJ as OBJ, TCC_OUTPUT_PREPROCESS as PREPROCESS
+from ._libtcc import lib, TCC_OUTPUT_MEMORY as MEMORY, TCC_OUTPUT_FILE as FILE, TCC_OUTPUT_OBJ as OBJ, TCC_OUTPUT_PREPROCESS as PREPROCESS, TCC_RELOCATE_AUTO as AUTO
 
 def ok_or_exception(func, *args, **kw):
     """A decorator that raizes an exception if the result of the call is
@@ -88,4 +88,9 @@ class TCC(object):
     def run(self, argc, argv):
         return lib.tcc_run(self.state, argc, argv)
 
-    # TODO function tcc_relocate and tcc_get_symbol
+    @ok_or_exception
+    def relocate(self, type=AUTO):
+        return lib.tcc_relocate(self.state, type)
+
+    def get_symbol(self, symbol):
+        return lib.tcc_get_symbol(self.state, symbol)
