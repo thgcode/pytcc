@@ -1,0 +1,11 @@
+setup.py
+pytcc/__init__.py
+pytcc/_libtcc.py
+pytcc/tcc.py
+pytcc/version.py
+pytcc.egg-info/PKG-INFO
+pytcc.egg-info/SOURCES.txt
+pytcc.egg-info/dependency_links.txt
+pytcc.egg-info/top_level.txt
+test/testclass.py
+test/testlib.py

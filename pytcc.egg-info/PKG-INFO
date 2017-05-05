@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: pytcc
+Version: 0.1
+Summary: Python wrapper for the Tiny C Compiler
+Home-page: https://github.com/thgcode/pytcc
+Author: Thiago Seus
+Author-email: thiago.seus@yahoo.com.br
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
