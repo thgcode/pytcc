@@ -1,4 +1,13 @@
-from ._libtcc import lib, TCC_OUTPUT_MEMORY as MEMORY, TCC_OUTPUT_FILE as FILE, TCC_OUTPUT_OBJ as OBJ, TCC_OUTPUT_PREPROCESS as PREPROCESS, TCC_RELOCATE_AUTO as AUTO
+from ._libtcc import (lib, TCC_OUTPUT_MEMORY as MEMORY, TCC_OUTPUT_FILE as FILE,
+    TCC_OUTPUT_OBJ as OBJ, TCC_OUTPUT_PREPROCESS as PREPROCESS, TCC_RELOCATE_AUTO as AUTO)
+import sys
+
+def _bytes(string, encoding=sys.getdefaultencoding()):
+    """Always returns a byte string."""
+    if isinstance(string, bytes):
+        return string
+    else:
+        return bytes(string, encoding)
 
 def ok_or_exception(func, *args, **kw):
     """A decorator that raizes an exception if the result of the call is
@@ -18,11 +27,11 @@ class _DefiningSymbolsDict(dict):
 
     def __setitem__(self, item, value):
         super(_DefiningSymbolsDict, self).__setitem__(item, value)
-        lib.tcc_define_symbol(self.state, item, value)
+        lib.tcc_define_symbol(self.state, _bytes(item), _bytes(value))
 
     def __delitem__(self, item):
         super(_DefiningSymbolsDict, self).__delitem__(item)
-        lib.tcc_undefine_symbol(self.state, item)
+        lib.tcc_undefine_symbol(self.state, _bytes(item))
 
 class TCC(object):
     """Represents a TCCState structure."""
@@ -42,23 +51,23 @@ class TCC(object):
     @library_path.setter
     def library_path(self, path):
         self._library_path = path
-        return lib.tcc_set_lib_path(self.state, path)
+        return lib.tcc_set_lib_path(self.state, _bytes(path))
 
     @ok_or_exception
     def add_include_path(self, path):
-        return lib.tcc_add_include_path(self.state, path)
+        return lib.tcc_add_include_path(self.state, _bytes(path))
 
     @ok_or_exception
     def add_sysinclude_path(self, path):
-        return lib.tcc_add_sysinclude_path(self.state, path)
+        return lib.tcc_add_sysinclude_path(self.state, _bytes(path))
 
     @ok_or_exception
     def add_file(self, path):
-        return lib.tcc_add_file(self.state, path)
+        return lib.tcc_add_file(self.state, _bytes(path))
 
     @ok_or_exception
     def compile_string(self, string):
-        return lib.tcc_compile_string(self.state, string)
+        return lib.tcc_compile_string(self.state, _bytes(string))
 
     @property
     def output_type(self):
@@ -72,17 +81,17 @@ class TCC(object):
 
     @ok_or_exception
     def add_library_path(self, path):
-        return lib.tcc_add_library_path(self.state, path)
+        return lib.tcc_add_library_path(self.state, _bytes(path))
 
     @ok_or_exception
     def add_library(self, library):
-        return lib.tcc_add_library(self.state, library)
+        return lib.tcc_add_library(self.state, _bytes(library))
 
     #TODO function add_symbol
 
     @ok_or_exception
     def output_file(self, path):
-        return lib.tcc_output_file(self.state, path)
+        return lib.tcc_output_file(self.state, _bytes(path))
 
     @ok_or_exception
     def run(self, argc, argv):
@@ -93,4 +102,4 @@ class TCC(object):
         return lib.tcc_relocate(self.state, type)
 
     def get_symbol(self, symbol):
-        return lib.tcc_get_symbol(self.state, symbol)
+        return lib.tcc_get_symbol(self.state, _bytes(symbol))
