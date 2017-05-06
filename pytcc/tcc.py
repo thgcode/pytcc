@@ -1,3 +1,4 @@
+from ctypes import pointer, c_char_p
 from ._libtcc import (lib, TCC_OUTPUT_MEMORY as MEMORY, TCC_OUTPUT_FILE as FILE,
     TCC_OUTPUT_OBJ as OBJ, TCC_OUTPUT_PREPROCESS as PREPROCESS, TCC_RELOCATE_AUTO as AUTO)
 import sys
@@ -96,8 +97,18 @@ class TCC(object):
         return lib.tcc_output_file(self.state, _bytes(path))
 
     @ok_or_exception
-    def run(self, argc, argv):
+    def _run(self, argc, argv):
         return lib.tcc_run(self.state, argc, argv)
+
+    def run(self, argv=None):
+        if argv is None:
+            argv = []
+        c_argc = len(argv)
+        if argv:
+            c_argv = (c_char_p * c_argc)(*[c_char_p(_bytes(x)) for x in argv])
+        else:
+            c_argv = None
+        return self._run(c_argc, c_argv)
 
     @ok_or_exception
     def relocate(self, type=AUTO):

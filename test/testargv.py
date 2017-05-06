@@ -1,14 +1,15 @@
 from pytcc import TCC, MEMORY
+import sys
 comp = TCC()
 comp.output_type = MEMORY
-comp.preprocessor_symbols["DEBUG"] = "1"
 comp.add_library_path("./")
-comp.add_file("test.c")
 comp.compile_string('''
 int main(int argc, char **argv)
     {
-    printf("%s %d", argv[0], sum(2, 2));
+    int i;
+    for (i = 0; i < argc; i++)
+        printf("%s", argv[i]);
     return 0;
 }
 ''')
-comp.run(["test"])
+comp.run(sys.argv)

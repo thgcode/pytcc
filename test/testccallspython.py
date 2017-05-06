@@ -19,4 +19,4 @@ int main(int argc, char **argv)
     return 0;
 }
 ''')
-comp.run(0, None)
+comp.run()
