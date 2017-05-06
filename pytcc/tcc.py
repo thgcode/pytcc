@@ -87,7 +87,9 @@ class TCC(object):
     def add_library(self, library):
         return lib.tcc_add_library(self.state, _bytes(library))
 
-    #TODO function add_symbol
+    @ok_or_exception
+    def add_symbol(self, symbol, value):
+        return lib.tcc_add_symbol(self.state, _bytes(symbol), value)
 
     @ok_or_exception
     def output_file(self, path):
