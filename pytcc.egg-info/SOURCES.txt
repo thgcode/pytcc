@@ -8,6 +8,7 @@ pytcc.egg-info/SOURCES.txt
 pytcc.egg-info/dependency_links.txt
 pytcc.egg-info/top_level.txt
 test/testTCCclass.py
+test/testargv.py
 test/testccallspython.py
 test/testfactorial.py
 test/testlib.py

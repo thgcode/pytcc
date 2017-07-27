@@ -1,7 +1,15 @@
-from ctypes import pointer, c_char_p
+from ctypes import c_char_p
 from ._libtcc import (lib, TCC_OUTPUT_MEMORY as MEMORY, TCC_OUTPUT_FILE as FILE,
-    TCC_OUTPUT_OBJ as OBJ, TCC_OUTPUT_PREPROCESS as PREPROCESS, TCC_RELOCATE_AUTO as AUTO)
+    TCC_OUTPUT_OBJ as OBJ, TCC_OUTPUT_PREPROCESS as PREPROCESS, TCC_RELOCATE_AUTO as AUTO,
+    error_func)
 import sys
+
+message = ""
+
+@error_func
+def on_error(userdata, tmessage):
+        global message
+        message = tmessage.decode(sys.getdefaultencoding())
 
 def _bytes(string, encoding=sys.getdefaultencoding()):
     """Always returns a byte string."""
@@ -16,7 +24,7 @@ def ok_or_exception(func, *args, **kw):
     def f(*args, **kw):
         result = func(*args, **kw)
         if result != 0:
-            raise RuntimeError("Error in %s: %s" % (func.__name__, result))
+            raise RuntimeError("Error in %s: %d: %s" % (func.__name__, result, message))
         return result
     return f
 
@@ -41,6 +49,7 @@ class TCC(object):
         self._library_path = None
         self._output_type = None
         self.preprocessor_symbols = _DefiningSymbolsDict(self.state)
+        lib.tcc_set_error_func(self.state, None, on_error)
 
     def __del__(self):
         return lib.tcc_delete(self.state)
