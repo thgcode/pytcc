@@ -18,13 +18,16 @@ def _bytes(string, encoding=sys.getdefaultencoding()):
     else:
         return bytes(string, encoding)
 
+class Error(Exception):
+    pass
+
 def ok_or_exception(func, *args, **kw):
     """A decorator that raizes an exception if the result of the call is
     nonzero."""
     def f(*args, **kw):
         result = func(*args, **kw)
         if result != 0:
-            raise RuntimeError("Error in %s: %d: %s" % (func.__name__, result, message))
+            raise Error("Error in %s: %d: %s" % (func.__name__, result, message))
         return result
     return f
 
