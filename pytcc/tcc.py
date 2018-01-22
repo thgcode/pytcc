@@ -82,6 +82,13 @@ class TCC(object):
     def compile_string(self, string):
         return lib.tcc_compile_string(self.state, _bytes(string))
 
+    def compile_file(self, file):
+        if hasattr(file, "read"):
+            return self.compile_string(file.read())
+        else:
+            with open(file, "r") as f:
+                return self.compile_file(f)
+
     @property
     def output_type(self):
         return self.output_type
