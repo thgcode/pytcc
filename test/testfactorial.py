@@ -1,7 +1,6 @@
 from ctypes import CFUNCTYPE, POINTER, c_int
-from pytcc import TCC, MEMORY
+from pytcc import TCC
 comp = TCC()
-comp.output_type = MEMORY
 comp.add_library_path("./")
 comp.add_file("factorial.c")
 comp.relocate()

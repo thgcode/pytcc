@@ -47,10 +47,10 @@ class _DefiningSymbolsDict(dict):
 
 class TCC(object):
     """Represents a TCCState structure."""
-    def __init__(self):
+    def __init__(self, output_type=MEMORY):
         self.state = lib.tcc_new()
         self._library_path = None
-        self._output_type = None
+        self.output_type = output_type
         self.preprocessor_symbols = _DefiningSymbolsDict(self.state)
         lib.tcc_set_error_func(self.state, None, on_error)
 

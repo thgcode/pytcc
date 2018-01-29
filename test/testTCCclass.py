@@ -1,6 +1,5 @@
 from pytcc import TCC, FILE
-comp = TCC()
-comp.output_type = FILE
+comp = TCC(output_type=FILE)
 comp.preprocessor_symbols["DEBUG"] = "1"
 comp.add_library_path("./")
 comp.add_file("test.c")

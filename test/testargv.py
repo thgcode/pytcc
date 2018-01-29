@@ -1,7 +1,6 @@
-from pytcc import TCC, MEMORY
+from pytcc import TCC
 import sys
 comp = TCC()
-comp.output_type = MEMORY
 comp.add_library_path("./")
 comp.compile_string('''
 int main(int argc, char **argv)

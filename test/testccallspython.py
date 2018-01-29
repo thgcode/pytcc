@@ -1,7 +1,6 @@
 from ctypes import c_int, CFUNCTYPE, POINTER
-from pytcc import TCC, MEMORY
+from pytcc import TCC
 comp = TCC()
-comp.output_type = MEMORY
 comp.preprocessor_symbols["DEBUG"] = "1"
 comp.add_library_path("./")
 
