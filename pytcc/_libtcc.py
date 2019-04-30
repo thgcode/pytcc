@@ -44,11 +44,11 @@ lib.tcc_compile_string.restype = c_int
 lib.tcc_set_output_type.argtypes = [TCCState, c_int]
 lib.tcc_set_output_type.restype = c_int
 
-TCC_OUTPUT_MEMORY = 0
-TCC_OUTPUT_FILE = 1
-TCC_OUTPUT_DLL = 2
-TCC_OUTPUT_OBJ = 3
-TCC_OUTPUT_PREPROCESS = 4
+TCC_OUTPUT_MEMORY = 1
+TCC_OUTPUT_FILE = 2
+TCC_OUTPUT_DLL = 3
+TCC_OUTPUT_OBJ = 4
+TCC_OUTPUT_PREPROCESS = 5
 
 lib.tcc_add_library_path.argtypes = [TCCState, c_char_p]
 lib.tcc_add_library_path.restype = c_int
