@@ -11,7 +11,7 @@ elif sys.platform == 'win32':
 	ext = 'dll'
 
 try:
-	lib = ctypes.cdll.LoadLibrary(f'libtcc.{ext}')
+	lib = cdll.LoadLibrary(f'libtcc.{ext}')
 except OSError:
 	raise Exception(
 		f'Could not find libtcc.{ext} in path. Either add '
