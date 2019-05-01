@@ -2,22 +2,31 @@ from ctypes import *
 from ctypes.util import find_library
 import os
 import platform
-def make_file_path(path):
-        modfolder = os.path.split(os.path.abspath(__file__))[0]
-        return os.path.join(modfolder, path)
+import sys
 
-def find_tcc_library():
-    lib = find_library("libtcc")
-    if lib:
-        return lib
-    if platform.system() == "Windows":
-        return make_file_path("libtcc.dll")
-    raise ImportError("TCC library not found")
+# libtcc DLL handle
+if sys.platform == 'linux' or sys.platform == 'darwin':
+	ext = 'so'
+elif sys.platform == 'win32':
+	ext = 'dll'
 
-lib = cdll.LoadLibrary(find_tcc_library())
+try:
+	lib = ctypes.cdll.LoadLibrary(f'libtcc.{ext}')
+except OSError:
+	raise Exception(
+		f'Could not find libtcc.{ext} in path. Either add '
+		f'TCC directory to path or CD into the folder containing libktcc.{ext}'
+	)
+except ImportError:
+	raise Exception(
+		'LibTCC was not compiled with the same architecture as this running '
+		'Python process. Either reinstall Python or TCC.'
+	)
+
 
 class TCCState(Structure):
     pass
+
 TCCState = POINTER(TCCState)
 lib.tcc_new.restype = TCCState
 lib.tcc_delete.restype = None
